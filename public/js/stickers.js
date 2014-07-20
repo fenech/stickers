@@ -9,13 +9,19 @@ function splitStickers(text) {
 }
 
 function ViewModel() {
-    this.totalStickers = 639;
+    this.totalStickers = 640;
     var stickersArray = new Array(this.totalStickers);
     for (var i = 0; i < this.totalStickers; ++i) {
         stickersArray[i] = ko.observable(0);
     }
     this.stickers = ko.observableArray(stickersArray);
     this.number = ko.observable();
+
+    this.addTo = ko.observable("got");
+    this.inputMethod = ko.observable("single");
+    this.inputList = ko.computed(function() {
+        return this.inputMethod() === "list";
+    }, this);
 
     this.add = function() {
         var index = Number(this.number());
@@ -24,7 +30,8 @@ function ViewModel() {
         }
         var sticker = this.stickers()[index];
         if (typeof sticker !== 'undefined') {
-            sticker(sticker() + 1);
+            if (this.addTo() === "got") sticker(sticker() + 1);
+            else if (this.addTo() === "need") sticker(0);
         }
         this.number('');
     }
@@ -42,7 +49,7 @@ function ViewModel() {
     }, this);
 
     this.inRange = function() {
-        return this.number() >= 0 && this.number() <= this.totalStickers;
+        return this.number() >= 0 && this.number() < this.totalStickers;
     }
 
     this.theirGot = ko.observable('');

@@ -1,9 +1,19 @@
 @extends('layout')
 
 @section('content')
+
 <h2 data-bind="click: toggleAddStickers">Add Stickers</h2>
 <form data-bind="submit: add, visible: showAddStickers">
-    <input data-bind="value: number, valueUpdate: 'input'" type="number" />
+    <p>Add to:
+        <label><input type="radio" name="addTo" value="need" data-bind="checked: addTo">need</label>
+        <label><input type="radio" name="addTo" value="got" data-bind="checked: addTo">got</label>
+    </p>
+    <p>Input method:
+        <label><input type="radio" name="inputMethod" value="single" data-bind="checked: inputMethod">single</label>
+        <label><input type="radio" name="inputMethod" value="list" data-bind="checked: inputMethod">list</label>
+    </p>
+    <textarea data-bind="visible: inputList" placeholder="enter a list of stickers here"></textarea>
+    <input data-bind="visible: !inputList(), value: $root.number, valueUpdate: 'input'" type="number" />
     <button type="submit" data-bind="enable: inRange()">add</button>
 </form>
 
